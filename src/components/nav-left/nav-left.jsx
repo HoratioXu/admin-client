@@ -1,16 +1,60 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import { Menu } from 'antd';
-import {HomeOutlined, UnorderedListOutlined, ShopOutlined, ShoppingOutlined} from '@ant-design/icons';
+
+import navList from "../../config/navConfig";
 import logo from "../../assets/images/logo.png";
 import './nav-left.less'
 
 const { SubMenu } = Menu;
 
-export default class NavLeft extends Component{
+
+class NavLeft extends Component{
+
+    constructor(props) {
+        super(props);
+        this.menuItem = this.createMenuItem(navList);
+    }
+
+    createMenuItem = (navList)=>{
+        const path = this.props.location.pathname;
+        return navList.map(item => {
+            if(!item.children)
+                return (
+                    <Menu.Item key={item.key}>
+                        <Link to={item.key}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                        </Link>
+                    </Menu.Item>
+                );
+            else{
+                const subItem = item.children.find(child=>child.key===path);
+                if(subItem)
+                    this.openKey = item.key;
+                return (
+                    <SubMenu
+                        key={item.key}
+                        title={
+                            <span>
+                                <item.icon />
+                                <span>{item.title}</span>
+                            </span>
+                        }
+                    >
+                        {this.createMenuItem(item.children)}
+                    </SubMenu>
+                );
+            }
+        });
+    };
+
 
     render(){
+        const selectKey = this.props.location.pathname;
+        const openKey = this.openKey;
+
         return(
             <div className='nav-left'>
                 <Link to='/' className='nav-left-header'>
@@ -18,13 +62,14 @@ export default class NavLeft extends Component{
                     <h1>React Panel</h1>
                 </Link>
                 <Menu
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
+                    selectedKeys={[selectKey]}
+                    defaultOpenKeys={[openKey]}
                     mode="inline"
                     theme="dark"
                 >
-                    <Menu.Item key="1">
-                        <HomeOutlined />
+                    {this.menuItem}
+                    {/*<Menu.Item key="1">
+                        <iconMap.HomeOutlined />
                         <span>Home</span>
                     </Menu.Item>
 
@@ -45,9 +90,11 @@ export default class NavLeft extends Component{
                             <ShopOutlined />
                             <span>Product</span>
                         </Menu.Item>
-                    </SubMenu>
+                    </SubMenu>*/}
                 </Menu>
             </div>
         )
     }
 }
+
+export default withRouter(NavLeft);
