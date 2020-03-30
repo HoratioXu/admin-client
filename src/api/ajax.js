@@ -4,7 +4,7 @@ import {message} from 'antd'
 export default function ajax(url, data={}, method='GET'){
     return new Promise(resolve => {
         let resPromise;
-        if(method==='get'){
+        if(method==='GET'){
             resPromise = axios.get(url,{
                 params: data
             });
