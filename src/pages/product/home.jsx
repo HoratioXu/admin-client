@@ -9,6 +9,9 @@ import {
 import { PlusCircleOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import ButtonLink from "../../components/button-link/button-link";
 
+import { reqProduct } from '../../api/service'
+import { PAGE_SIZE} from "../../utils/constants";
+
 const Option = Select.Option;
 
 export default class ProductHome extends Component{
@@ -45,6 +48,8 @@ export default class ProductHome extends Component{
                     "detail": "<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">dddddddddddddddddddd</span>&nbsp;</p>\n<p><span style=\"color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;\">dddddddddddddddddddddddddddd</span>&nbsp;</p>\n",
                     "__v": 0
                 },],
+            total: 0,
+            loading: false,
         };
         this.initColumns();
     }
@@ -89,11 +94,30 @@ export default class ProductHome extends Component{
         ]
     };
 
+    getProducts = async (pageNum) => {
+        this.setState({
+            loading: true
+        });
+        const result = await reqProduct(pageNum, 3);
+        this.setState({
+            loading: false
+        });
+        if(result.status === 0){
+            const {total, list} = result.data;
+            this.setState({
+                total,
+                products: list
+            });
+        }
+    };
+
+    componentDidMount() {
+        this.getProducts(1);
+    }
 
 
     render(){
-        console.log('home');
-        const {products, total} = this.state;
+        const {products, total, loading} = this.state;
         const title = (
             <span>
                 <Select value='productName' onChange={value => this.setState({searchType: value})}>
@@ -115,12 +139,14 @@ export default class ProductHome extends Component{
                 <Table
                     bordered
                     rowKey='_id'
+                    loading={loading}
                     columns={this.columns}
                     dataSource={products}
                     pagination={{
-                        defaultPageSize: 5,
+                        defaultPageSize: PAGE_SIZE,
                         total,
                         showQuickJumper: true,
+                        onChange: this.getProducts
                     }}
                 />
             </Card>
