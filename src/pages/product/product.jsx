@@ -5,6 +5,8 @@ import AddUpdate from "./add-update";
 import ProductHome from "./home";
 import Detail from "./detail";
 
+import './product.less'
+
 export default class Product extends Component{
 
     render(){

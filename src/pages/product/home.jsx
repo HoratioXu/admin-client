@@ -59,8 +59,12 @@ export default class ProductHome extends Component{
                 title: 'Edit',
                 render: (product) => {return (
                     <span>
-                        <ButtonLink>Detail</ButtonLink>
-                        <ButtonLink>Change</ButtonLink>
+                        <ButtonLink onClick={() => this.props.history.push('/product/detail', product)}>
+                            Detail
+                        </ButtonLink>
+                        <ButtonLink onClick={() => this.props.history.push('/product/addUpdate', product)}>
+                            Change
+                        </ButtonLink>
                     </span>
                 )}
             },
