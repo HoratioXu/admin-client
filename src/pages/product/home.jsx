@@ -9,7 +9,7 @@ import {
 import { PlusCircleOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import ButtonLink from "../../components/button-link/button-link";
 
-import { reqProduct } from '../../api/service'
+import { reqProduct, reqSearchProducts } from '../../api/service'
 import { PAGE_SIZE} from "../../utils/constants";
 
 const Option = Select.Option;
@@ -19,37 +19,11 @@ export default class ProductHome extends Component{
     constructor(props) {
         super(props);
         this.state={
-            products: [{
-                "status": 1,
-                "imgs": [
-                    "image-1559402396338.jpg"
-                ],
-                "_id": "5ca9e05db49ef916541160cd",
-                "name": "Lenovo ThinkPad 4809",
-                "desc": "ppppppppppppppppppppp",
-                "price": 65999,
-                "pCategoryId": "5ca9d6c0b49ef916541160bb",
-                "categoryId": "5ca9db9fb49ef916541160cc",
-                "detail": "<p><span style=\"color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;\">ddddddddddddddddddddddddddd</span> 222</p>\n<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">dddddddddddddd</span></p>\n<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">99999</span></p>\n",
-                "__v": 0
-            },
-                {
-                    "status": 1,
-                    "imgs": [
-                        "image-1559402448049.jpg",
-                        "image-1559402450480.jpg"
-                    ],
-                    "_id": "5ca9e414b49ef916541160ce",
-                    "name": "ASUS",
-                    "desc": "ddddddddddddddddddddddd",
-                    "price": 6799,
-                    "pCategoryId": "5ca9d6c0b49ef916541160bb",
-                    "categoryId": "5ca9db8ab49ef916541160cb",
-                    "detail": "<p><span style=\"color: rgb(102,102,102);background-color: rgb(255,255,255);font-size: 16px;\">dddddddddddddddddddd</span>&nbsp;</p>\n<p><span style=\"color: rgb(228,57,60);background-color: rgb(255,255,255);font-size: 12px;\">dddddddddddddddddddddddddddd</span>&nbsp;</p>\n",
-                    "__v": 0
-                },],
+            products: [],
             total: 0,
             loading: false,
+            searchType:'productName',
+            searchKey:''
         };
         this.initColumns();
     }
@@ -98,7 +72,13 @@ export default class ProductHome extends Component{
         this.setState({
             loading: true
         });
-        const result = await reqProduct(pageNum, 3);
+        const {searchKey, searchType} = this.state;
+        let result;
+        if(searchKey){
+            result = await reqSearchProducts({pageNum, pageSize:PAGE_SIZE, searchKey, searchType});
+        }else{
+            result = await reqProduct(pageNum, 3);
+        }
         this.setState({
             loading: false
         });
@@ -117,15 +97,18 @@ export default class ProductHome extends Component{
 
 
     render(){
-        const {products, total, loading} = this.state;
+        const {products, total, loading, searchType, searchKey} = this.state;
         const title = (
             <span>
-                <Select value='productName' onChange={value => this.setState({searchType: value})}>
+                <Select value={searchType} onChange={value => this.setState({searchType: value})}>
                     <Option key='productName' value='productName'>Search by name</Option>
                     <Option key='productDesc' value='productDesc'>Search by description</Option>
                 </Select>
-                <Input style={{width: 150, marginLeft: 10, marginRight: 10}} placeholder='keyword'/>
-                <Button type='primary'>Search</Button>
+                <Input style={{width: 150, marginLeft: 10, marginRight: 10}}
+                       placeholder='keyword'
+                       onChange={(event)=>{this.setState({searchKey:event.target.value})}}
+                />
+                <Button type='primary' onClick={()=>{this.getProducts(1)}}>Search</Button>
             </span>
         );
         const extra = (

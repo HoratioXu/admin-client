@@ -22,11 +22,11 @@ export const updateCategoryReq = ({categoryId, categoryName}) => ajax(
 );
 
 export const reqProduct = (pageNum, pageSize) => ajax('/manage/product/list', {pageNum, pageSize});
-export const reqSearchProducts = ({pageNum, pageSize, searchType, searchName}) =>
+export const reqSearchProducts = ({pageNum, pageSize, searchType, searchKey}) =>
     ajax('/manage/product/search', {
             pageNum,
             pageSize,
-            [searchType]: searchName,
+            [searchType]: searchKey,
     });
 export const reqAddOrUpdateProduct = (product) => ajax('/manage/product/' +
     (product._id ? 'update' : 'add'), product, 'post');
