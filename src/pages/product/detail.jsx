@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {List, Card, Form} from 'antd'
+import {List, Card} from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import {reqCategory} from '../../api/service'
 import {BASE_IMG_PATH} from '../../utils/constants'

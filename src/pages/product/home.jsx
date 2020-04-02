@@ -9,7 +9,7 @@ import {
 import { PlusCircleOutlined, ArrowRightOutlined } from '@ant-design/icons';
 import ButtonLink from "../../components/button-link/button-link";
 
-import { reqProduct, reqSearchProducts } from '../../api/service'
+import { reqProduct, reqSearchProducts, reqUpdateProductStatus } from '../../api/service'
 import { PAGE_SIZE} from "../../utils/constants";
 
 const Option = Select.Option;
@@ -47,10 +47,17 @@ export default class ProductHome extends Component{
             {
                 width: 100,
                 title: 'Status',
-                render: (product) => {return (
+                render: (product) => {
+                    const {_id, status} = product;
+                    const newStatus = status === 1? 2:1;
+                    return (
                     <span style={{textAlign: "center"}}>
-                        <Button type='primary'>UnShelve</Button>
-                        <p style={{margin: 0, fontWeight:"bold"}}>On Sale</p>
+                        <Button type='primary'
+                            onClick={()=>this.updateProductStatus(_id, newStatus)}
+                        >
+                            {status===1? 'UnShelve':'Shelve'}
+                        </Button>
+                        <p style={{margin: 0, fontWeight:"bold"}}>{status===1? 'On sale':'Unavailable'}</p>
                     </span>
                 )}
             },
@@ -73,6 +80,7 @@ export default class ProductHome extends Component{
     };
 
     getProducts = async (pageNum) => {
+        this.pageNum = pageNum;
         this.setState({
             loading: true
         });
@@ -92,6 +100,14 @@ export default class ProductHome extends Component{
                 total,
                 products: list
             });
+        }
+    };
+
+    updateProductStatus = async (productId, status) => {
+        const result = await reqUpdateProductStatus(productId, status);
+        if (result.status === 0) {
+            message.success('Update success!');
+            this.getProducts(this.pageNum || 1)
         }
     };
 
@@ -139,4 +155,6 @@ export default class ProductHome extends Component{
             </Card>
         )
     }
+
+
 }

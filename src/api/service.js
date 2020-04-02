@@ -32,6 +32,7 @@ export const reqSearchProducts = ({pageNum, pageSize, searchType, searchKey}) =>
     });
 export const reqAddOrUpdateProduct = (product) => ajax('/manage/product/' +
     (product._id ? 'update' : 'add'), product, 'post');
+
 export const reqUpdateProductStatus = (productId, status) =>
     ajax('/manage/product/updateStatus', {
             productId,

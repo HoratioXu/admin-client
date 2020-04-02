@@ -8,6 +8,7 @@ import logo from "../../assets/images/logo.png";
 import './nav-left.less'
 
 const { SubMenu } = Menu;
+const { Item } = Menu;
 
 
 class NavLeft extends Component{
@@ -22,15 +23,15 @@ class NavLeft extends Component{
         return navList.map(item => {
             if(!item.children)
                 return (
-                    <Menu.Item key={item.key}>
+                    <Item key={item.key}>
                         <Link to={item.key}>
                             <item.icon />
                             <span>{item.title}</span>
                         </Link>
-                    </Menu.Item>
+                    </Item>
                 );
             else{
-                const subItem = item.children.find(child=>child.key===path);
+                const subItem = item.children.find(child=>path.indexOf(child.key)===0);
                 if(subItem)
                     this.openKey = item.key;
                 return (
@@ -52,8 +53,10 @@ class NavLeft extends Component{
 
 
     render(){
-        const selectKey = this.props.location.pathname;
+        let selectKey = this.props.location.pathname;
         const openKey = this.openKey;
+        if(selectKey.indexOf('/product') === 0)
+            selectKey = '/product';
 
         return(
             <div className='nav-left'>
@@ -68,29 +71,6 @@ class NavLeft extends Component{
                     theme="dark"
                 >
                     {this.menuItem}
-                    {/*<Menu.Item key="1">
-                        <iconMap.HomeOutlined />
-                        <span>Home</span>
-                    </Menu.Item>
-
-                    <SubMenu
-                        key="sub1"
-                        title={
-                            <span>
-                                <ShoppingOutlined />
-                                <span>Management</span>
-                            </span>
-                        }
-                    >
-                        <Menu.Item key="5">
-                            <UnorderedListOutlined />
-                            <span>Category</span>
-                        </Menu.Item>
-                        <Menu.Item key="6">
-                            <ShopOutlined />
-                            <span>Product</span>
-                        </Menu.Item>
-                    </SubMenu>*/}
                 </Menu>
             </div>
         )
