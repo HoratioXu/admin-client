@@ -59,6 +59,7 @@ const navList = [
                 key: '/charts/pie',
                 icon: PieChartOutlined
             },
+
         ]
     },
 ];

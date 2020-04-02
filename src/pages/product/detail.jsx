@@ -1,9 +1,11 @@
 import React, {Component} from 'react'
-import {List, Card} from 'antd'
+import {List, Card, Form} from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import {reqCategory} from '../../api/service'
 import {BASE_IMG_PATH} from '../../utils/constants'
 import ButtonLink from "../../components/button-link/button-link";
+
+const Item = List;
 
 export default class Detail extends Component{
     constructor(props) {
@@ -36,6 +38,7 @@ export default class Detail extends Component{
 
     render(){
         const {name, desc, price, imgs, detail} = this.props.location.state;
+        console.log(detail);
         const {cName1, cName2} = this.state;
         const title = (
             <span>
@@ -49,23 +52,23 @@ export default class Detail extends Component{
         return (
             <Card className='product-detail' title={title}>
                 <List>
-                    <List.Item>
+                    <Item>
                         <span className='left'>Product Name:</span>
                         <span>{name}</span>
-                    </List.Item>
-                    <List.Item>
+                    </Item>
+                    <Item>
                         <span className='left'>Description:</span>
                         <span>{desc}</span>
-                    </List.Item>
-                    <List.Item>
+                    </Item>
+                    <Item>
                         <span className='left'>Price:</span>
                         <span>{price + 'CAD'}</span>
-                    </List.Item>
-                    <List.Item>
+                    </Item>
+                    <Item>
                         <span className='left'>Category:</span>
                         <span>{cName1 + (cName2 ? ' --> ' + cName2 : '')}</span>
-                    </List.Item>
-                    <List.Item>
+                    </Item>
+                    <Item>
                         <span className='left'>Product Image:</span>
                         <span>
                             {
@@ -74,11 +77,11 @@ export default class Detail extends Component{
                                 ))
                             }
                         </span>
-                    </List.Item>
-                    <List.Item>
+                    </Item>
+                    <Item>
                         <span className='left'>Details:</span>
                         <div dangerouslySetInnerHTML={{__html: detail}}></div>
-                    </List.Item>
+                    </Item>
                 </List>
             </Card>
         )
