@@ -117,7 +117,7 @@ export default class ProductHome extends Component{
 
 
     render(){
-        const {products, total, loading, searchType, searchKey} = this.state;
+        const {products, total, loading, searchType} = this.state;
         const title = (
             <span>
                 <Select value={searchType} onChange={value => this.setState({searchType: value})}>
@@ -132,10 +132,10 @@ export default class ProductHome extends Component{
             </span>
         );
         const extra = (
-            <Button type='primary' style={{float: 'right'}}>
+            <ButtonLink type='primary' style={{float: 'right'}} onClick={()=>this.props.history.push('/product/addUpdate')}>
                 <PlusCircleOutlined/>
                 Add product
-            </Button>
+            </ButtonLink>
         );
         return(
             <Card title={title} extra={extra}>

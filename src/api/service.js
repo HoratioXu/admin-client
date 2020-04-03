@@ -21,7 +21,7 @@ export const updateCategoryReq = ({categoryId, categoryName}) => ajax(
         'POST'
 );
 
-export const reqCategory = (categoryId) => ajax('/manage/category/info', {categoryId})
+export const reqCategory = (categoryId) => ajax('/manage/category/info', {categoryId});
 
 export const reqProduct = (pageNum, pageSize) => ajax('/manage/product/list', {pageNum, pageSize});
 export const reqSearchProducts = ({pageNum, pageSize, searchType, searchKey}) =>
