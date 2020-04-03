@@ -39,4 +39,6 @@ export const reqUpdateProductStatus = (productId, status) =>
             status
     }, 'POST');
 
+export const reqDeleteImg = (name) => ajax('/manage/img/delete', {name}, 'post')
+
 export const addUser = (user) => ajax('/manage/user/add', user, 'POST');

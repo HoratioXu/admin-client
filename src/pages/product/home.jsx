@@ -6,7 +6,7 @@ import {
     Button,
     Table,
     message } from 'antd'
-import { PlusCircleOutlined, ArrowRightOutlined } from '@ant-design/icons';
+import { PlusCircleOutlined } from '@ant-design/icons';
 import ButtonLink from "../../components/button-link/button-link";
 
 import { reqProduct, reqSearchProducts, reqUpdateProductStatus } from '../../api/service'
@@ -132,10 +132,10 @@ export default class ProductHome extends Component{
             </span>
         );
         const extra = (
-            <ButtonLink type='primary' style={{float: 'right'}} onClick={()=>this.props.history.push('/product/addUpdate')}>
+            <Button type='primary' style={{float: 'right'}} onClick={()=>this.props.history.push('/product/addUpdate')}>
                 <PlusCircleOutlined/>
                 Add product
-            </ButtonLink>
+            </Button>
         );
         return(
             <Card title={title} extra={extra}>

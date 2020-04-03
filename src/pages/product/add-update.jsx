@@ -10,6 +10,7 @@ import {
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import ButtonLink from "../../components/button-link/button-link";
 import {getCategoryReq, reqAddOrUpdateProduct} from '../../api/service'
+import PicturesWall from "./pictures-wall";
 
 const {Item} = Form;
 const {TextArea} = Input;
@@ -21,6 +22,7 @@ export default class AddUpdate extends Component{
         this.state = {
             options: [],
         };
+        this.picWall = React.createRef();
         const product = this.props.location.state;
         this.product = product || {};
         this.isUpdate = !!product
@@ -84,8 +86,8 @@ export default class AddUpdate extends Component{
 
     onFinish = async (values) => {
         const {name, desc, price, categoryIds} = values;
-        /*const imgs = this.pw.current.getImgs();
-        const detail = this.editor.current.getDetail();*/
+        const imgs = this.picWall.current.getImageNames();
+        /*const detail = this.editor.current.getDetail();*/
         let pCategoryId = '';
         let categoryId = '';
         if(categoryIds.length===1) {
@@ -95,7 +97,7 @@ export default class AddUpdate extends Component{
             pCategoryId = categoryIds[0];
             categoryId = categoryIds[1];
         }
-        const product = {name, desc, price, pCategoryId, categoryId/*, detail, imgs*/};
+        const product = {name, desc, price, pCategoryId, categoryId, /*detail,*/ imgs};
         if(this.isUpdate)
             product._id = this.product._id;
         const result = await reqAddOrUpdateProduct(product);
@@ -143,6 +145,7 @@ export default class AddUpdate extends Component{
             labelCol: { span: 4 },
             wrapperCol: { span: 10 }
         };
+        console.log(product);
 
         return(
             <Card title={title}>
@@ -166,7 +169,7 @@ export default class AddUpdate extends Component{
                           name='desc'
                           rules={[{required: true, message: 'you have to input the description'}]}
                     >
-                        <TextArea placeholder="please input a description" autosize />
+                        <TextArea placeholder="please input a description" autosize='true' />
                     </Item>
 
                     <Item label="Price" {...formItemLayout}
@@ -190,7 +193,7 @@ export default class AddUpdate extends Component{
                     </Item>
 
                     <Item label="Images" {...formItemLayout}>
-                        {/*<PicturesWall ref={this.pw} imgs={product.imgs}/>*/}
+                        <PicturesWall ref={this.picWall} imgs={product.imgs}/>
                     </Item>
 
                     <Item
