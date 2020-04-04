@@ -11,6 +11,7 @@ import { ArrowLeftOutlined } from '@ant-design/icons';
 import ButtonLink from "../../components/button-link/button-link";
 import {getCategoryReq, reqAddOrUpdateProduct} from '../../api/service'
 import PicturesWall from "./pictures-wall";
+import RichTextEditor from "./rich-text-editor";
 
 const {Item} = Form;
 const {TextArea} = Input;
@@ -23,6 +24,7 @@ export default class AddUpdate extends Component{
             options: [],
         };
         this.picWall = React.createRef();
+        this.editor = React.createRef();
         const product = this.props.location.state;
         this.product = product || {};
         this.isUpdate = !!product
@@ -87,7 +89,7 @@ export default class AddUpdate extends Component{
     onFinish = async (values) => {
         const {name, desc, price, categoryIds} = values;
         const imgs = this.picWall.current.getImageNames();
-        /*const detail = this.editor.current.getDetail();*/
+        const detail = this.editor.current.getDetail();
         let pCategoryId = '';
         let categoryId = '';
         if(categoryIds.length===1) {
@@ -97,7 +99,7 @@ export default class AddUpdate extends Component{
             pCategoryId = categoryIds[0];
             categoryId = categoryIds[1];
         }
-        const product = {name, desc, price, pCategoryId, categoryId, /*detail,*/ imgs};
+        const product = {name, desc, price, pCategoryId, categoryId, detail, imgs};
         if(this.isUpdate)
             product._id = this.product._id;
         const result = await reqAddOrUpdateProduct(product);
@@ -199,8 +201,8 @@ export default class AddUpdate extends Component{
                     <Item
                         label="Details"
                         labelCol={{ span: 4 }}
-                        wrapperCol={{ span: 20 }}>
-                        {/*<RichTextEditor ref={this.editor} detail={product.detail}/>*/}
+                        wrapperCol={{ span: 16 }}>
+                        <RichTextEditor ref={this.editor} detail={product.detail}/>
                     </Item>
 
                     <Button type='primary'
