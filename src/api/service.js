@@ -39,6 +39,12 @@ export const reqUpdateProductStatus = (productId, status) =>
             status
     }, 'POST');
 
-export const reqDeleteImg = (name) => ajax('/manage/img/delete', {name}, 'post')
+export const reqDeleteImg = (name) => ajax('/manage/img/delete', {name}, 'post');
+
+export const reqAddRole = (roleName) => ajax('/manage/role/add', {roleName}, 'POST');
+
+export const reqRoles = () => ajax('/manage/role/list');
+
+export const reqUpdateRole = (role) => ajax('/manage/role/update', role, 'POST');
 
 export const addUser = (user) => ajax('/manage/user/add', user, 'POST');
