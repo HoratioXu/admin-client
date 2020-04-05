@@ -3,6 +3,8 @@ import {Button, Card, Table, Modal, message, Input, Form} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
 
 import { reqAddRole, reqRoles, reqUpdateRole } from "../../api/service";
+import memory from "../../utils/memory";
+import AuthForm from "./auth-form";
 
 const {Item} = Form;
 
@@ -83,6 +85,23 @@ export default class Role extends Component{
         });
     };
 
+    updateRole = async () => {
+        this.setState({
+            isShowAuth: false
+        });
+        const role = this.state.role;
+        role.menus = this.auth.current.getMenus();
+        role.auth_time = Date.now();
+        role.auth_name = memory.user.username;
+        const result = await reqUpdateRole(role);
+        if (result.status===0) {
+            message.success('Setting success');
+            this.setState({
+                roles: [...this.state.roles]
+            });
+        }
+    };
+
     componentDidMount() {
         this.getRoles();
     }
@@ -97,7 +116,12 @@ export default class Role extends Component{
             <span>
                 <Button type='primary'  onClick={() => this.setState({isShowAdd: true})}>Create role</Button>
                 &nbsp;&nbsp;
-                <Button type='primary' disabled={!role._id}>Authentication</Button>
+                <Button type='primary'
+                        disabled={!role._id}
+                        onClick={() => this.setState({isShowAuth: true})}
+                >
+                    Authentication
+                </Button>
             </span>
         );
         return(
@@ -117,7 +141,7 @@ export default class Role extends Component{
                     onOk={this.addRole}
                     onCancel={() => {
                         this.setState({isShowAdd: false});
-                        this.addForm.current.resetFields()
+                        this.addForm.current.resetFields();
                     }}
                 >
                     <Form ref={this.addForm}>
@@ -130,6 +154,16 @@ export default class Role extends Component{
                             <Input type="text" placeholder="Please enter a title"/>
                         </Item>
                     </Form>
+                </Modal>
+                <Modal
+                    title="Permission Setting"
+                    visible={isShowAuth}
+                    onOk={this.updateRole}
+                    onCancel={() => {
+                        this.setState({isShowAuth: false})
+                    }}
+                >
+                    <AuthForm ref={this.auth} role={role}/>
                 </Modal>
             </Card>
         )
