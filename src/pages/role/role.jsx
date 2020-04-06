@@ -4,6 +4,7 @@ import {PAGE_SIZE} from "../../utils/constants";
 
 import { reqAddRole, reqRoles, reqUpdateRole } from "../../api/service";
 import memory from "../../utils/memory";
+import {generateDate} from "../../utils/date";
 import AuthForm from "./auth-form";
 
 const {Item} = Form;
@@ -34,14 +35,17 @@ export default class Role extends Component{
             {
                 title: 'Date created',
                 dataIndex: 'create_time',
+                render: generateDate
             },
             {
                 title: 'Auth date',
                 dataIndex: 'auth_time',
+                render: generateDate
             },
             {
                 title: 'Authorizer',
                 dataIndex: 'auth_name'
+
             },
         ]
     };
@@ -90,7 +94,7 @@ export default class Role extends Component{
             isShowAuth: false
         });
         const role = this.state.role;
-        role.menus = this.auth.current.getMenus();
+        role.menus = this.authForm.current.getMenus();
         role.auth_time = Date.now();
         role.auth_name = memory.user.username;
         const result = await reqUpdateRole(role);
@@ -163,7 +167,7 @@ export default class Role extends Component{
                         this.setState({isShowAuth: false})
                     }}
                 >
-                    <AuthForm ref={this.auth} role={role}/>
+                    <AuthForm ref={this.authForm} role={role}/>
                 </Modal>
             </Card>
         )

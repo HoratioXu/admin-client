@@ -1,11 +1,10 @@
-import React, {PureComponent} from 'react'
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Form, Input, Tree} from 'antd'
 import navList from "../../config/navConfig";
 const Item = Form.Item;
-const { TreeNode } = Tree;
 
-export default class AuthForm extends PureComponent {
+export default class AuthForm extends Component {
     static propTypes = {
         role: PropTypes.object
     };
@@ -13,7 +12,11 @@ export default class AuthForm extends PureComponent {
     constructor(props) {
         super(props);
         const {menus} = this.props.role;
-        this.treeNodes = this.getTreeNodes(navList);
+        this.treeData = [{
+            title: "Permission",
+            key: "all",
+            children: this.getTreeData(navList)
+        }];
         this.state = {
             checkedKeys: menus
         }
@@ -21,39 +24,34 @@ export default class AuthForm extends PureComponent {
 
     getMenus = () => this.state.checkedKeys;
 
-    getTreeNodes = (navList) => {
+    getTreeData = (navList) => {
         return navList.reduce((pre, item) => {
             pre.push(
-                <TreeNode title={item.title} key={item.key}>
-                    {item.children ? this.getTreeNodes(item.children) : null}
-                </TreeNode>
+                {
+                    title: item.title,
+                    key: item.key,
+                    children: item.children? this.getTreeData(item.children):null
+                }
             );
-            return pre
+            return pre;
         }, []);
     };
 
     onCheck = checkedKeys => {
-        console.log('onCheck', checkedKeys);
         this.setState({ checkedKeys });
     };
 
-   /* componentWillReceiveProps (nextProps) {
+
+
+    UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
         console.log('componentWillReceiveProps()', nextProps);
         const menus = nextProps.role.menus;
         this.setState({
             checkedKeys: menus
         });
-    }*/
-
-    static getDerivedStateFromProps(props, state) {
-        const {menus} = props.role;
-        return {
-            checkedKeys: menus
-        };
     }
 
     render() {
-        console.log('AuthForm render()');
         const {role} = this.props;
         const {checkedKeys} = this.state;
         const formItemLayout = {
@@ -70,11 +68,8 @@ export default class AuthForm extends PureComponent {
                     defaultExpandAll={true}
                     checkedKeys={checkedKeys}
                     onCheck={this.onCheck}
-                >
-                    <TreeNode title="Permission" key="all">
-                        {this.treeNodes}
-                    </TreeNode>
-                </Tree>
+                    treeData={this.treeData}
+                />
             </div>
         )
     }
