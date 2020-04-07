@@ -1,10 +1,10 @@
-import React, {Component} from 'react'
+import React, {PureComponent} from 'react'
 import PropTypes from 'prop-types'
 import {Form, Input, Tree} from 'antd'
 import navList from "../../config/navConfig";
 const Item = Form.Item;
 
-export default class AuthForm extends Component {
+export default class AuthForm extends PureComponent {
     static propTypes = {
         role: PropTypes.object
     };
@@ -44,7 +44,6 @@ export default class AuthForm extends Component {
 
 
     UNSAFE_componentWillReceiveProps(nextProps, nextContext) {
-        console.log('componentWillReceiveProps()', nextProps);
         const menus = nextProps.role.menus;
         this.setState({
             checkedKeys: menus
@@ -52,6 +51,7 @@ export default class AuthForm extends Component {
     }
 
     render() {
+        console.log('auth render');
         const {role} = this.props;
         const {checkedKeys} = this.state;
         const formItemLayout = {
