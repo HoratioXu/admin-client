@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, Button, Table, Modal} from 'antd'
+import {Card, Button, Table, Modal, message} from 'antd'
 import ButtonLink from "../../components/button-link/button-link";
 import UserForm from "./user-form";
 import {reqUsers, reqAddOrUpdateUser, reqDeleteUser} from "../../api/service";
@@ -68,17 +68,24 @@ export default class User extends Component{
             onOk: async () => {
                 const result = await reqDeleteUser(user._id);
                 if (result.status === 0) {
+                    message.success('User deleted');
                     this.getUsers();
+                }else{
+                    message.error('Operation failed, try again later')
                 }
             }
         })
     };
 
     showUpdate = (user) => {
+        if(this.form){
+            const {username, phone, email, role_id} = user;
+            this.form.setFieldsValue({username, phone, email, role_id});
+        }
         this.user = user;
         this.setState({
             isShow: true
-        })
+        });
     };
 
     getUsers = async () => {
@@ -94,25 +101,34 @@ export default class User extends Component{
     };
 
     showAddUser = () => {
+        if(this.form)
+            this.form.setFieldsValue({username:'',password:'',phone:'',email:'',role_id:''});
         this.user = null;
         this.setState({
             isShow: true
-        })
+        });
     };
 
-    AddOrUpdateUser = async () => {
-        const user = this.form.getFieldsValue();
-        this.form.resetFields();
-        if (this.user) {
-            user._id = this.user._id
-        }
-        this.setState({
-            isShow: false
+    AddOrUpdateUser = () => {
+        this.form.validateFields().then(async value => {
+            const user = value;
+            let type = 'Created';
+            if (this.user) {
+                type = 'Updated';
+                user._id = this.user._id
+            }
+            this.setState({isShow: false});
+            const res = await reqAddOrUpdateUser(user);
+            if (res.status === 0) {
+                message.success('User ' + type);
+                this.getUsers();
+            }else{
+                message.error('Operation failed, try again later')
+            }
+        }).catch(e =>{
+            console.log(e);
         });
-        const result = await reqAddOrUpdateUser(user);
-        if (result.status === 0) {
-            this.getUsers()
-        }
+
     };
 
     componentDidMount() {
@@ -136,11 +152,15 @@ export default class User extends Component{
                     <Modal
                         title={user._id ? 'Update user' : 'Add user'}
                         visible={isShow}
-                        onCancel={() => this.setState({isShow: false})}
+                        onCancel={() => {
+                            this.setState({isShow: false});
+                        }}
                         onOk={this.AddOrUpdateUser}
                     >
                         <UserForm
-                            setForm={(form) => this.form = form}
+                            setForm={(form) => {
+                                this.form = form;
+                            }}
                             user={user}
                             roles={roles}
                         />

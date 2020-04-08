@@ -10,12 +10,22 @@ export default function UserForm(props){
     const [form] = Form.useForm();
     props.setForm(form);
     const formItemLayout = {
-        labelCol: {span: 4},
+        labelCol: {span: 6},
         wrapperCol: {span: 16}
     };
     const {user, roles} = props;
     return (
-        <Form {...formItemLayout} form={form}>
+        <Form
+            {...formItemLayout}
+            form={form}
+            initialValues={{
+                username:user.username,
+                password:user.password,
+                phone:user.phone,
+                email:user.email,
+                role_id:user.role_id
+            }}
+        >
             <Item
                 name='username'
                 label="User"
@@ -74,7 +84,7 @@ export default function UserForm(props){
             <Item name='phone' label="Phone number">
                 <Input type="phone" placeholder="please enter the phone number"/>
             </Item>
-            <Item name='email' label="Email">
+            <Item name='email' label="Email" rules={[{required: true}]}>
                 <Input type="email" placeholder="Please enter your email address"/>
             </Item>
             <Item

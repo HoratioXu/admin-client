@@ -12,6 +12,7 @@ const navList = [
         title: 'Home',
         key: '/home',
         icon: HomeOutlined,
+        isPublic: true
     },
     {
         title: 'Management',

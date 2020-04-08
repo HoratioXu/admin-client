@@ -6,6 +6,7 @@ import { reqAddRole, reqRoles, reqUpdateRole } from "../../api/service";
 import memory from "../../utils/memory";
 import {generateDate} from "../../utils/date";
 import AuthForm from "./auth-form";
+import storage from "../../utils/storage";
 
 const {Item} = Form;
 
@@ -99,10 +100,19 @@ export default class Role extends Component{
         role.auth_name = memory.user.username;
         const result = await reqUpdateRole(role);
         if (result.status===0) {
-            message.success('Setting success');
-            this.setState({
-                roles: [...this.state.roles]
-            });
+            if(role._id === memory.user.role_id){
+                memory.user = {};
+                storage.removeUser();
+                this.props.history.replace('/login');
+                message.success('The current user\'s permission has changed, please log in again')
+            }else{
+                message.success('Role updated');
+                this.setState({
+                    roles: [...this.state.roles]
+                });
+            }
+        }else{
+            message.error('Failed to update');
         }
     };
 
@@ -124,7 +134,7 @@ export default class Role extends Component{
                         disabled={!role._id}
                         onClick={() => this.setState({isShowAuth: true})}
                 >
-                    Authentication
+                    Edit
                 </Button>
             </span>
         );
