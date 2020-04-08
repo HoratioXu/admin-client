@@ -9,7 +9,6 @@ export default function UserForm(props){
 
     const [form] = Form.useForm();
     props.setForm(form);
-    console.log(form);
     const formItemLayout = {
         labelCol: {span: 4},
         wrapperCol: {span: 16}
@@ -17,13 +16,57 @@ export default function UserForm(props){
     const {user, roles} = props;
     return (
         <Form {...formItemLayout} form={form}>
-            {/*<Item name='username' label="User">
+            <Item
+                name='username'
+                label="User"
+                rules={[
+                    {
+                        required: true,
+                        whiteSpace: true,
+                        message: 'Please input your Username!',
+                    },
+                    {
+                        min: 4,
+                        message: 'At least 4 characters!',
+                    },
+                    {
+                        max: 12,
+                        message: 'At most 12 characters!',
+                    },
+                    {
+                        pattern: /^[a-zA-Z0-9_]+$/,
+                        message: 'letter number and _!',
+                    }
+                ]}
+            >
                 <Input type="text" placeholder="Please enter a name"/>
             </Item>
             {
                 !user._id ?
                     (
-                        <Item name='password' label="Password">
+                        <Item
+                            name='password'
+                            label="Password"
+                            rules={[
+                                {
+                                    required: true,
+                                    whiteSpace: true,
+                                    message: 'Please input your Password!',
+                                },
+                                {
+                                    min: 4,
+                                    message: 'At least 4 characters!',
+                                },
+                                {
+                                    max: 12,
+                                    message: 'At most 12 characters!',
+                                },
+                                {
+                                    pattern: /^[a-zA-Z0-9_]+$/,
+                                    message: 'letter number and _!',
+                                }
+                            ]}
+                        >
                             <Input type="password" placeholder="Please enter the password"/>
                         </Item>
                     ) : null
@@ -34,7 +77,17 @@ export default function UserForm(props){
             <Item name='email' label="Email">
                 <Input type="email" placeholder="Please enter your email address"/>
             </Item>
-            <Item name='role_id' label="Role">
+            <Item
+                name='role_id'
+                label="Role"
+                rules={[
+                    {
+                        required: true,
+                        whiteSpace: true,
+                        message: 'Please select a role!',
+                    }
+                    ]}
+            >
                 <Select style={{width: 200}} placeholder='Please choose a role'>
                     {
                         roles.map(role =>
@@ -44,7 +97,7 @@ export default function UserForm(props){
                         )
                     }
                 </Select>
-            </Item>*/}
+            </Item>
         </Form>
     );
 }

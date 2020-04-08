@@ -71,7 +71,7 @@ export default class Login extends Component{
                                 {
                                     required: true,
                                     whiteSpace: true,
-                                    message: 'Please input your Username!',
+                                    message: 'Please input your Password!',
                                 },
                                 {
                                     min: 4,
