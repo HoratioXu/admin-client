@@ -3,7 +3,7 @@ import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Redirect } from 'react-router-dom'
 
-import {login} from '../../api/service'
+import {reqLogin} from '../../api/service'
 import memory from "../../utils/memory";
 import storage from '../../utils/storage'
 import './login.less'
@@ -14,7 +14,7 @@ export default class Login extends Component{
 
      onFinish = async values => {
         const {username, password} = values;
-        const res = await login(username, password);
+        const res = await reqLogin(username, password);
         if(res.status===0){
             const user = res.data;
             message.success('Login success');
