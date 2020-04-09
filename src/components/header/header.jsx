@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { withRouter } from 'react-router-dom';
 import { Modal } from 'antd';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import {connect} from "react-redux";
 
 import storage from "../../utils/storage";
 import {generateDate} from "../../utils/date";
@@ -25,7 +26,7 @@ class Header extends Component{
         }, 1000);
     };
 
-    getTitle = () =>{
+    /*getTitle = () =>{
         const path = this.props.location.pathname;
         let title = '';
         navList.forEach(item=>{
@@ -39,7 +40,7 @@ class Header extends Component{
             }
         });
         return title;
-    };
+    };*/
 
     logout = () =>{
         confirm({
@@ -64,7 +65,7 @@ class Header extends Component{
 
 
     render(){
-        let title = this.getTitle();
+        let title = this.props.headTitle;
         const {sysTime} = this.state;
         return(
             <div className='header'>
@@ -83,4 +84,7 @@ class Header extends Component{
     }
 }
 
-export default withRouter(Header);
+export default connect(
+    state => ({headTitle: state.headTitle}),
+    {}
+)(withRouter(Header));

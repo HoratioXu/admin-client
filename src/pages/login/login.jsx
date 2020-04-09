@@ -20,7 +20,7 @@ export default class Login extends Component{
             message.success('Login success');
             memory.user = user;
             storage.saveUser(user);
-            this.props.history.replace('/');
+            this.props.history.replace('/home');
         }else{
             message.error('Fail to login, please check the username or password')
         }

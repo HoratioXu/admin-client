@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
 import { Link, withRouter } from 'react-router-dom'
-
+import {connect} from 'react-redux'
 import { Menu } from 'antd';
 
 import navList from "../../config/navConfig";
 import logo from "../../assets/images/logo.png";
 import './nav-left.less'
 import memory from "../../utils/memory";
+import {setHeadTitle} from "../../redux/actions";
 
 const { SubMenu } = Menu;
 const { Item } = Menu;
@@ -35,16 +36,18 @@ class NavLeft extends Component{
         const path = this.props.location.pathname;
         return navList.map(item => {
             if (this.hasAuth(item)) {
-                if (!item.children)
+                if (!item.children){
+                    if(path.indexOf(item.key)===0)
+                        this.props.setHeadTitle(item.title);
                     return (
                         <Item key={item.key}>
-                            <Link to={item.key}>
+                            <Link to={item.key} onClick={()=>this.props.setHeadTitle(item.title)}>
                                 <item.icon/>
                                 <span>{item.title}</span>
                             </Link>
                         </Item>
                     );
-                else {
+                }else {
                     const subItem = item.children.find(child => path.indexOf(child.key) === 0);
                     if (subItem)
                         this.openKey = item.key;
@@ -93,4 +96,7 @@ class NavLeft extends Component{
     }
 }
 
-export default withRouter(NavLeft);
+export default connect(
+    state => ({}),
+    {setHeadTitle}
+)(withRouter(NavLeft));
