@@ -6,7 +6,6 @@ import { Menu } from 'antd';
 import navList from "../../config/navConfig";
 import logo from "../../assets/images/logo.png";
 import './nav-left.less'
-import memory from "../../utils/memory";
 import {setHeadTitle} from "../../redux/actions";
 
 const { SubMenu } = Menu;
@@ -17,14 +16,14 @@ class NavLeft extends Component{
 
     constructor(props) {
         super(props);
-        this.menuSet = new Set(memory.user.role.menus || []);
+        this.menuSet = new Set(this.props.user.role.menus || []);
         this.menuItem = this.createMenuItem(navList);
     }
 
     hasAuth = (item) => {
         const key = item.key;
         const menuSet = this.menuSet;
-        if(item.isPublic || memory.user.username==='admin' || menuSet.has(key)) {
+        if(item.isPublic || this.props.user.username==='admin' || menuSet.has(key)) {
             return true
         } else if(item.children){
             return !!item.children.find(child => menuSet.has(child.key))
@@ -97,6 +96,6 @@ class NavLeft extends Component{
 }
 
 export default connect(
-    state => ({}),
+    state => ({user: state.user}),
     {setHeadTitle}
 )(withRouter(NavLeft));

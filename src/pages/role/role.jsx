@@ -1,16 +1,16 @@
 import React, {Component} from 'react';
 import {Button, Card, Table, Modal, message, Input, Form} from "antd";
 import {PAGE_SIZE} from "../../utils/constants";
+import {connect} from 'react-redux';
 
 import { reqAddRole, reqRoles, reqUpdateRole } from "../../api/service";
-import memory from "../../utils/memory";
 import {generateDate} from "../../utils/date";
 import AuthForm from "./auth-form";
-import storage from "../../utils/storage";
+import {logout} from "../../redux/actions";
 
 const {Item} = Form;
 
-export default class Role extends Component{
+class Role extends Component{
     constructor(props) {
         super(props);
         this.initColumn();
@@ -22,7 +22,6 @@ export default class Role extends Component{
         };
         this.addForm = React.createRef();
         this.authForm = React.createRef();
-
     }
 
 
@@ -97,14 +96,12 @@ export default class Role extends Component{
         const role = this.state.role;
         role.menus = this.authForm.current.getMenus();
         role.auth_time = Date.now();
-        role.auth_name = memory.user.username;
+        role.auth_name = this.props.user.username;
         const result = await reqUpdateRole(role);
         if (result.status===0) {
-            if(role._id === memory.user.role_id){
-                memory.user = {};
-                storage.removeUser();
-                this.props.history.replace('/login');
-                message.success('The current user\'s permission has changed, please log in again')
+            if(role._id === this.props.user.role_id){
+                message.success('The current user\'s permission has changed, please log in again');
+                this.props.logout();
             }else{
                 message.success('Role updated');
                 this.setState({
@@ -183,3 +180,7 @@ export default class Role extends Component{
         )
     }
 }
+export default connect(
+    state => ({user:state.user}),
+    {logout}
+)(Role)

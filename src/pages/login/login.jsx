@@ -2,36 +2,28 @@ import React, {Component} from 'react';
 import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Redirect } from 'react-router-dom'
-
-import {reqLogin} from '../../api/service'
-import memory from "../../utils/memory";
-import storage from '../../utils/storage'
+import {connect} from 'react-redux'
+import {login} from "../../redux/actions";
 import './login.less'
 import logo from '../../assets/images/logo.png';
 
 
-export default class Login extends Component{
+class Login extends Component{
 
      onFinish = async values => {
         const {username, password} = values;
-        const res = await reqLogin(username, password);
-        if(res.status===0){
-            const user = res.data;
-            message.success('Login success');
-            memory.user = user;
-            storage.saveUser(user);
-            this.props.history.replace('/home');
-        }else{
-            message.error('Fail to login, please check the username or password')
-        }
+        this.props.login(username, password);
 
     };
 
     render(){
-        const user = memory.user;
-        if(user._id){
-            return <Redirect to='/' />
+        const user = this.props.user;
+        if(user && user._id){
+            return <Redirect to='/home' />
         }
+        const loginError = this.props.user.errorMsg;
+        if(loginError)
+            message.error(loginError);
 
         return(
             <div className='login'>
@@ -103,3 +95,8 @@ export default class Login extends Component{
         )
     }
 }
+
+export default connect(
+    state => ({user: state.user}),
+    {login}
+)(Login);
