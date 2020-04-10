@@ -80,7 +80,7 @@ class Role extends Component{
                 const role = result.data;
                 this.setState(state => ({
                     roles: [...state.roles, role]
-                }))
+                }));
             } else {
                 message.success('Failed to create role')
             }
