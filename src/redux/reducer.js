@@ -7,7 +7,7 @@ import {
 } from './action-types'
 import storage from "../utils/storage";
 
-const initHeadTitle = 'Home';
+const initHeadTitle = '';
 function headTitle(state = initHeadTitle, action) {
     switch (action.type) {
         case SET_HEAD_TITLE:
