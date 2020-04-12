@@ -3,8 +3,7 @@ import { Upload, Modal, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
 import { reqDeleteImg } from "../../api/service";
-import { BASE_IMG_PATH } from "../../utils/constants";
-
+import {BASE_IMG_PATH, UPLOAD_IMG_NAME } from '../../utils/constants'
 function getBase64(file) {
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -92,7 +91,7 @@ export default class PicturesWall extends Component {
                 <Upload
                     action='/manage/img/upload'
                     accept='image/*'
-                    name='image'
+                    name= {UPLOAD_IMG_NAME}
                     listType="picture-card"
                     fileList={fileList}
                     onPreview={this.handlePreview}

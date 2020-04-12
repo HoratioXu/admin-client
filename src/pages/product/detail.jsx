@@ -61,7 +61,7 @@ export default class Detail extends Component{
                         <span>{desc}</span>
                     </Item>
                     <Item>
-                        <span className='left'>Price:</span>
+                        <span className='left'>Product Price:</span>
                         <span>{price + 'CAD'}</span>
                     </Item>
                     <Item>
@@ -79,8 +79,8 @@ export default class Detail extends Component{
                         </span>
                     </Item>
                     <Item>
-                        <span className='left'>Details:</span>
-                        <div dangerouslySetInnerHTML={{__html: detail}}></div>
+                        <span className='left'>Product Details:</span>
+                        <div dangerouslySetInnerHTML={{__html: detail}}/>
                     </Item>
                 </List>
             </Card>
