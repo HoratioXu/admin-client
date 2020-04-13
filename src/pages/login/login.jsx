@@ -43,14 +43,6 @@ class Login extends Component{
                                     message: 'Please input your Username!',
                                 },
                                 {
-                                    min: 4,
-                                    message: 'At least 4 characters!',
-                                },
-                                {
-                                    max: 12,
-                                    message: 'At most 12 characters!',
-                                },
-                                {
                                     pattern: /^[a-zA-Z0-9_]+$/,
                                     message: 'letter number and _!',
                                 }
@@ -64,14 +56,6 @@ class Login extends Component{
                                     required: true,
                                     whiteSpace: true,
                                     message: 'Please input your Password!',
-                                },
-                                {
-                                    min: 4,
-                                    message: 'At least 4 characters!',
-                                },
-                                {
-                                    max: 12,
-                                    message: 'At most 12 characters!',
                                 },
                                 {
                                     pattern: /^[a-zA-Z0-9_]+$/,
