@@ -55,9 +55,9 @@ export default class ProductHome extends Component{
                         <Button type='primary'
                             onClick={()=>this.updateProductStatus(_id, newStatus)}
                         >
-                            {status===1? 'UnShelve':'Shelve'}
+                            {status===1? 'Close listing':'Open listing'}
                         </Button>
-                        <p style={{margin: 0, fontWeight:"bold"}}>{status===1? 'On sale':'Unavailable'}</p>
+                        <p style={{margin: 0, fontWeight:"bold"}}>{status===1? 'Active':'Inactive'}</p>
                     </span>
                 )}
             },

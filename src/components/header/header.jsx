@@ -5,7 +5,7 @@ import { ExclamationCircleOutlined } from '@ant-design/icons';
 import {connect} from "react-redux";
 
 import {logout} from "../../redux/actions";
-import {generateDate} from "../../utils/date";
+import {generateDateFull} from "../../utils/date";
 import ButtonLink from "../button-link/button-link";
 import './header.less'
 
@@ -14,12 +14,12 @@ const { confirm } = Modal;
 class Header extends Component{
 
     state = {
-      sysTime: generateDate(Date.now())
+      sysTime: generateDateFull(Date.now())
     };
 
     updateTime = () =>{
         this.timer = setInterval(()=>{
-            const sysTime = generateDate(Date.now());
+            const sysTime = generateDateFull(Date.now());
             this.setState({sysTime});
         }, 1000);
     };
