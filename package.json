@@ -39,7 +39,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build --max-old-space-size=4096",
     "test": "react-app-rewired test",
-    "eject": "react-scripts eject",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -56,6 +56,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://localhost:5000",
-  "devDependencies": {}
+  "proxy": "http://localhost:5000"
 }
