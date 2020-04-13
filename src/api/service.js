@@ -2,7 +2,6 @@ import ajax from "./ajax";
 
 export const reqLogin = (username, password) => ajax('/login', {username, password}, 'POST');
 
-
 export const getCategoryReq = (parentId) => ajax('/manage/category/list', {parentId});
 export const addCategoryReq = (parentId, categoryName) => ajax(
     '/manage/category/add',
